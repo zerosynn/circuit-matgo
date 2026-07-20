@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   cardImage,
+  CardSkin,
   chooseFloorCard,
   chooseGo,
   chooseStop,
@@ -26,6 +27,7 @@ const KIND_LABEL = {
 
 function CardFace({
   card,
+  skin,
   active = false,
   linked = false,
   selectable = false,
@@ -33,6 +35,7 @@ function CardFace({
   onHighlight,
 }: {
   card: HwatuCard;
+  skin: CardSkin;
   active?: boolean;
   linked?: boolean;
   selectable?: boolean;
@@ -50,7 +53,7 @@ function CardFace({
       disabled={!onClick}
       aria-label={card.name + " " + KIND_LABEL[card.kind]}
     >
-      <Image src={cardImage(card)} alt="" width={576} height={1024} draggable={false} unoptimized />
+      <Image src={cardImage(card, skin)} alt="" width={576} height={1024} draggable={false} unoptimized />
       <span className="month-tag">{card.month}</span>
     </button>
   );
@@ -64,7 +67,7 @@ function CardBack({ index }: { index: number }) {
   );
 }
 
-function CaptureGroup({ cards, kind }: { cards: HwatuCard[]; kind: HwatuCard["kind"] }) {
+function CaptureGroup({ cards, kind, skin }: { cards: HwatuCard[]; kind: HwatuCard["kind"]; skin: CardSkin }) {
   const filtered = cards.filter((card) => card.kind === kind);
   const count = kind === "junk" ? filtered.reduce((sum, card) => sum + card.pi, 0) : filtered.length;
   return (
@@ -76,7 +79,7 @@ function CaptureGroup({ cards, kind }: { cards: HwatuCard[]; kind: HwatuCard["ki
       <div className="capture-stack">
         {filtered.slice(-6).map((card, index) => (
           <div className="capture-mini" key={card.id} style={{ "--n": index } as React.CSSProperties}>
-            <Image src={cardImage(card)} alt="" width={576} height={1024} unoptimized />
+            <Image src={cardImage(card, skin)} alt="" width={576} height={1024} unoptimized />
           </div>
         ))}
         {filtered.length === 0 && <i className="empty-slot" />}
@@ -85,7 +88,7 @@ function CaptureGroup({ cards, kind }: { cards: HwatuCard[]; kind: HwatuCard["ki
   );
 }
 
-function CaptureRack({ cards, label }: { cards: HwatuCard[]; label: string }) {
+function CaptureRack({ cards, label, skin }: { cards: HwatuCard[]; label: string; skin: CardSkin }) {
   const score = scoreCards(cards);
   return (
     <section className="capture-rack" aria-label={label + " 획득 패"}>
@@ -95,7 +98,7 @@ function CaptureRack({ cards, label }: { cards: HwatuCard[]; label: string }) {
       </div>
       <div className="capture-grid">
         {(["bright", "animal", "ribbon", "junk"] as const).map((kind) => (
-          <CaptureGroup key={kind} cards={cards} kind={kind} />
+          <CaptureGroup key={kind} cards={cards} kind={kind} skin={skin} />
         ))}
       </div>
       <div className="combo-line">{score.combos.length ? score.combos.join(" · ") : "COMBO WAITING"}</div>
@@ -125,6 +128,7 @@ function ScoreReadout({ label, cards, go, active }: { label: string; cards: Hwat
 
 export default function Home() {
   const [game, setGame] = useState<GameState | null>(null);
+  const [skin, setSkin] = useState<CardSkin>("circuit");
   const [rulesOpen, setRulesOpen] = useState(false);
   const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
   const [stats, setStats] = useState<Stats>({ wins: 0, losses: 0, streak: 0 });
@@ -133,6 +137,8 @@ export default function Home() {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setGame(newGame());
+      const savedSkin = window.localStorage.getItem("circuit-matgo-skin");
+      if (savedSkin === "glass") setSkin("glass");
       const saved = window.localStorage.getItem("circuit-matgo-stats");
       if (saved) setStats(JSON.parse(saved));
     }, 0);
@@ -173,6 +179,15 @@ export default function Home() {
     setGame(newGame());
   };
 
+  const toggleSkin = () => {
+    setHoveredMonth(null);
+    setSkin((current) => {
+      const next = current === "circuit" ? "glass" : "circuit";
+      window.localStorage.setItem("circuit-matgo-skin", next);
+      return next;
+    });
+  };
+
   const winnerScore = game && game.winner !== null ? scoreCards(game.captures[game.winner]) : null;
   const winningHands = winnerScore
     ? [
@@ -201,11 +216,24 @@ export default function Home() {
   }
 
   return (
-    <main className="game-shell">
+    <main className={"game-shell theme-" + skin}>
       <header className="topbar">
-        <div className="brand">
-          <span className="brand-chip"><i /><i /><i /></span>
-          <div><b>CIRCUIT</b><strong>MATGO</strong></div>
+        <div className="brand-area">
+          <button
+            className="skin-switch"
+            type="button"
+            onClick={toggleSkin}
+            aria-label={"스킨 변경, 현재 " + (skin === "glass" ? "스테인드글라스" : "전자회로")}
+            aria-pressed={skin === "glass"}
+            title="스킨 변경"
+          >
+            <span className="skin-glyph" aria-hidden="true"><i /><i /><i /><i /></span>
+            <span className="skin-copy"><small>SKIN</small><b>{skin === "glass" ? "GLASS" : "CIRCUIT"}</b></span>
+          </button>
+          <div className="brand">
+            <span className="brand-chip"><i /><i /><i /></span>
+            <div><b>{skin === "glass" ? "STAINED" : "CIRCUIT"}</b><strong>MATGO</strong></div>
+          </div>
         </div>
         <div className="round-status" aria-live="polite">
           <span>ROUND {Math.ceil(game.turnNumber / 2).toString().padStart(2, "0")}</span>
@@ -244,6 +272,7 @@ export default function Home() {
                   <CardFace
                     key={card.id}
                     card={card}
+                    skin={skin}
                     active={isChoice}
                     linked={game.turn === 0 && game.phase === "playing" && !game.pending && hoveredMonth === card.month}
                     selectable={isChoice}
@@ -267,6 +296,7 @@ export default function Home() {
                   <CardFace
                     key={card.id}
                     card={card}
+                    skin={skin}
                     selectable={playable}
                     active={playable && matchingMonths.has(card.month)}
                     linked={hoveredMonth === card.month}
@@ -286,8 +316,8 @@ export default function Home() {
           <div className="rail-head"><span>LIVE SCORE</span><i>SYNC</i></div>
           <ScoreReadout label="CPU" cards={game.captures[1]} go={game.goCount[1]} active={game.turn === 1} />
           <ScoreReadout label="PLAYER" cards={game.captures[0]} go={game.goCount[0]} active={game.turn === 0} />
-          <CaptureRack cards={game.captures[1]} label="CPU" />
-          <CaptureRack cards={game.captures[0]} label="MY" />
+          <CaptureRack cards={game.captures[1]} label="CPU" skin={skin} />
+          <CaptureRack cards={game.captures[0]} label="MY" skin={skin} />
 
           <section className="event-log">
             <div className="rail-head"><span>EVENT LOG</span><i>0{game.log.length}</i></div>

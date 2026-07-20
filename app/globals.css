@@ -112,10 +112,77 @@ button:focus-visible {
   opacity: 0.5;
 }
 
+.brand-area,
 .brand {
   display: flex;
   align-items: center;
+}
+
+.brand-area {
+  gap: 10px;
+}
+
+.brand {
   gap: 12px;
+}
+
+.skin-switch {
+  height: 40px;
+  min-width: 92px;
+  padding: 0 9px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #294438;
+  background: #08100c;
+  color: #9bad9f;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.skin-switch:hover {
+  border-color: var(--mint);
+  color: var(--text);
+}
+
+.skin-glyph {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #315343;
+  background: #040806;
+}
+
+.skin-glyph i {
+  display: block;
+  background: #294b3a;
+}
+
+.skin-glyph i:nth-child(2) {
+  background: var(--mint);
+}
+
+.skin-copy {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  font-family: var(--font-code);
+}
+
+.skin-copy small {
+  color: #63766b;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.skin-copy b {
+  font-size: 10px;
+  line-height: 1;
 }
 
 .brand-chip {
@@ -1108,6 +1175,273 @@ button:focus-visible {
   line-height: 1.65;
 }
 
+/* Stained-glass skin */
+.theme-glass {
+  --void: #060609;
+  --panel: #0d0b10;
+  --panel-2: #121017;
+  --line: #49391f;
+  --line-hot: #a88134;
+  --mint: #e7c56d;
+  --cyan: #68d5df;
+  --amber: #f2d58c;
+  --red: #dc5359;
+  --text: #f2eee3;
+  --muted: #a79f91;
+}
+
+.theme-glass.game-shell {
+  background-color: #07070b;
+  background-image:
+    linear-gradient(36deg, transparent 44%, rgba(218, 177, 78, 0.09) 45%, rgba(218, 177, 78, 0.09) 46%, transparent 47%),
+    linear-gradient(144deg, transparent 46%, rgba(66, 166, 175, 0.07) 47%, rgba(66, 166, 175, 0.07) 48%, transparent 49%),
+    linear-gradient(90deg, rgba(24, 49, 61, 0.18), rgba(52, 17, 42, 0.13));
+  background-size: 78px 78px, 96px 96px, auto;
+}
+
+.theme-glass .topbar {
+  border-bottom-color: #5d4723;
+  background: rgba(8, 7, 10, 0.96);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.34);
+}
+
+.theme-glass .topbar::after {
+  background: linear-gradient(90deg, #b78d36, #6fd1d8 32%, #a94e76 66%, #d6b65e);
+  opacity: 0.72;
+}
+
+.theme-glass .skin-switch {
+  border-color: #8b6c2f;
+  background: #110e14;
+  color: #e4cf91;
+  box-shadow: inset 0 0 0 1px rgba(218, 185, 100, 0.08);
+}
+
+.theme-glass .skin-glyph {
+  border-color: #ae8738;
+  background: #060508;
+  gap: 1px;
+}
+
+.theme-glass .skin-glyph i:nth-child(1) { background: #a83c48; }
+.theme-glass .skin-glyph i:nth-child(2) { background: #d2a841; }
+.theme-glass .skin-glyph i:nth-child(3) { background: #176d78; }
+.theme-glass .skin-glyph i:nth-child(4) { background: #643b87; }
+
+.theme-glass .skin-copy small {
+  color: #8f815e;
+}
+
+.theme-glass .brand-chip {
+  border-color: #9c7833;
+  background: #100d12;
+  box-shadow: inset 0 0 0 3px #070609, 0 0 15px rgba(211, 173, 79, 0.1);
+}
+
+.theme-glass .brand-chip::before,
+.theme-glass .brand-chip::after {
+  background: #bd9340;
+  box-shadow: 0 8px 0 #326b6f, 0 -8px 0 #704068;
+}
+
+.theme-glass .brand-chip i:nth-child(1) { background: #a6424c; }
+.theme-glass .brand-chip i:nth-child(2) { background: #d7b95e; box-shadow: 0 0 10px rgba(224, 190, 99, 0.55); }
+.theme-glass .brand-chip i:nth-child(3) { background: #297982; }
+
+.theme-glass .round-status b {
+  color: #f1d57f;
+  text-shadow: 0 0 14px rgba(235, 194, 91, 0.25);
+}
+
+.theme-glass .top-actions button {
+  border-color: #584522;
+  background: #100d12;
+  color: #c8bda4;
+}
+
+.theme-glass .play-surface {
+  border-right-color: #4f3c20;
+  background-color: #08080d;
+  background-image:
+    linear-gradient(28deg, transparent 46%, rgba(195, 150, 54, 0.1) 47%, rgba(195, 150, 54, 0.1) 48%, transparent 49%),
+    linear-gradient(151deg, transparent 45%, rgba(41, 120, 132, 0.09) 46%, rgba(41, 120, 132, 0.09) 47%, transparent 48%),
+    linear-gradient(90deg, rgba(12, 35, 44, 0.25), transparent 40%, rgba(53, 16, 42, 0.2));
+  background-size: 104px 88px, 126px 108px, auto;
+}
+
+.theme-glass .play-surface::before {
+  background:
+    repeating-linear-gradient(33deg, transparent 0 92px, rgba(208, 165, 68, 0.045) 93px, transparent 95px),
+    repeating-linear-gradient(147deg, transparent 0 118px, rgba(79, 178, 185, 0.035) 119px, transparent 121px);
+}
+
+.theme-glass .circuit-trace {
+  display: none;
+}
+
+.theme-glass .opponent-zone,
+.theme-glass .player-zone {
+  border-color: rgba(169, 129, 51, 0.28);
+  background: linear-gradient(90deg, rgba(37, 17, 30, 0.12), transparent 30%, transparent 70%, rgba(10, 42, 48, 0.12));
+}
+
+.theme-glass .avatar {
+  border-color: #765b2a;
+  background: #100c12;
+  color: #e2bf61;
+}
+
+.theme-glass .avatar.cpu {
+  border-color: #386f76;
+  color: #77d1d8;
+}
+
+.theme-glass .table-zone::before {
+  border-color: rgba(203, 162, 72, 0.38);
+  box-shadow: inset 0 0 34px rgba(138, 42, 75, 0.06), 0 0 32px rgba(14, 96, 107, 0.04);
+}
+
+.theme-glass .card-back {
+  border-color: #8a6a2b;
+  background-color: #050508;
+  background-image:
+    linear-gradient(35deg, transparent 44%, #6d2f43 45%, #6d2f43 47%, transparent 48%),
+    linear-gradient(145deg, transparent 44%, #1d6770 45%, #1d6770 47%, transparent 48%),
+    linear-gradient(90deg, rgba(145, 95, 35, 0.14), transparent 45%, rgba(69, 37, 91, 0.2));
+  background-size: 18px 18px, 22px 22px, auto;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.52), inset 0 0 0 3px #08070a;
+}
+
+.theme-glass .card-back span {
+  width: 18px;
+  height: 18px;
+  border-color: #b48b38;
+  background: #27152e;
+  box-shadow: inset 0 0 0 3px #070609, 0 0 12px rgba(189, 80, 147, 0.35);
+  transform: rotate(45deg);
+}
+
+.theme-glass .deck-back {
+  border-color: #a27d34;
+  box-shadow: 4px 4px 0 #221b12, 8px 8px 0 #0d0c10, 0 18px 34px rgba(0, 0, 0, 0.55);
+}
+
+.theme-glass .deck-count {
+  color: #e4c367;
+}
+
+.theme-glass .hwatu-card {
+  background: #030304;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(174, 132, 44, 0.5);
+}
+
+.theme-glass .hwatu-card img {
+  object-fit: cover;
+}
+
+.theme-glass .hwatu-card .month-tag {
+  display: none;
+}
+
+.theme-glass .hwatu-card.playable:hover {
+  filter: brightness(1.13) saturate(1.08);
+  box-shadow: 0 15px 26px rgba(0, 0, 0, 0.55), 0 0 0 2px #e2bc5a, 0 0 22px rgba(222, 178, 72, 0.24);
+}
+
+.theme-glass .hwatu-card.choice {
+  box-shadow: 0 0 0 3px #e9bf56, 0 0 28px rgba(231, 182, 68, 0.42);
+}
+
+.theme-glass .floor-grid .hwatu-card.linked {
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.58), 0 0 0 3px #67d6de, 0 0 30px rgba(63, 184, 194, 0.46);
+}
+
+.theme-glass .data-rail {
+  background:
+    linear-gradient(32deg, transparent 48%, rgba(181, 136, 45, 0.035) 49%, transparent 50%),
+    #09080c;
+  background-size: 64px 64px, auto;
+}
+
+.theme-glass .score-readout,
+.theme-glass .capture-rack,
+.theme-glass .capture-group,
+.theme-glass .rule-list article {
+  background: #0e0b10;
+}
+
+.theme-glass .score-readout {
+  border-left-color: #493b26;
+}
+
+.theme-glass .score-readout.active {
+  border-left-color: #e0bb61;
+  background: #151015;
+  box-shadow: inset 0 0 20px rgba(101, 55, 112, 0.08);
+}
+
+.theme-glass .score-cells span,
+.theme-glass .capture-rack,
+.theme-glass .capture-group,
+.theme-glass .empty-slot,
+.theme-glass .winning-hands span,
+.theme-glass .result-reasons span,
+.theme-glass .draw-summary span {
+  border-color: #493a22;
+}
+
+.theme-glass .capture-mini {
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.62);
+}
+
+.theme-glass .capture-mini img {
+  object-fit: cover;
+}
+
+.theme-glass .combo-line,
+.theme-glass .rack-title b,
+.theme-glass .rule-list b {
+  color: #e2bd61;
+}
+
+.theme-glass .modal-layer {
+  background: rgba(5, 4, 8, 0.92);
+}
+
+.theme-glass .decision-panel,
+.theme-glass .result-panel,
+.theme-glass .rules-panel {
+  border-color: #a27b32;
+  background:
+    linear-gradient(140deg, rgba(39, 88, 96, 0.08), transparent 38%, rgba(100, 37, 79, 0.1)),
+    #0d0a0f;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.78), inset 0 0 0 1px rgba(229, 191, 92, 0.08);
+}
+
+.theme-glass .decision-panel::before,
+.theme-glass .result-panel::before,
+.theme-glass .rules-panel::before {
+  background: linear-gradient(90deg, #b94b55, #e0ba5b 35%, #5bc9d1 68%, #7d4b98);
+  box-shadow: 0 0 18px rgba(218, 176, 77, 0.42);
+}
+
+.theme-glass .result-score,
+.theme-glass .result-detail-block,
+.theme-glass .score-breakdown span {
+  background: #09070a;
+  border-color: #4e3e25;
+}
+
+.theme-glass .result-details {
+  border-color: #584527;
+  background: #584527;
+}
+
+.theme-glass .winning-hands span {
+  background: rgba(219, 177, 71, 0.08);
+  color: #edcc77;
+}
+
 @media (max-width: 1100px) {
   .game-grid {
     grid-template-columns: 1fr 280px;
@@ -1151,9 +1485,20 @@ button:focus-visible {
     display: none;
   }
 
+  .brand-area .brand div,
+  .skin-copy {
+    display: none;
+  }
+
+  .skin-switch {
+    min-width: 40px;
+    width: 40px;
+    padding: 0 9px;
+  }
+
   .round-status {
     position: absolute;
-    left: 74px;
+    left: 104px;
     right: 100px;
     min-width: 0;
     text-align: left;
@@ -1267,7 +1612,7 @@ button:focus-visible {
 }
 
 @media (max-width: 460px) {
-  .brand div {
+  .brand-area .brand {
     display: none;
   }
 
@@ -1281,7 +1626,7 @@ button:focus-visible {
   }
 
   .round-status {
-    left: 56px;
+    left: 62px;
     right: 82px;
   }
 

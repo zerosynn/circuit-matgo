@@ -24,18 +24,23 @@ test("server renders the Circuit Matgo shell", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/i);
 });
 
-test("ships the complete game engine and 48 card assets", async () => {
-  const [page, game, css, cards] = await Promise.all([
+test("ships the complete game engine and both 48-card skins", async () => {
+  const [page, game, css, circuitCards, glassCards] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/game.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readdir(new URL("../public/cards/", import.meta.url)),
+    readdir(new URL("../public/cards-glass/", import.meta.url)),
   ]);
 
-  assert.equal(cards.filter((name) => name.endsWith(".webp")).length, 48);
+  assert.equal(circuitCards.filter((name) => name.endsWith(".webp")).length, 48);
+  assert.equal(glassCards.filter((name) => name.endsWith(".webp")).length, 48);
   assert.match(page, /chooseGo/);
   assert.match(page, /chooseStop/);
+  assert.match(page, /circuit-matgo-skin/);
+  assert.match(game, /cards-glass/);
   assert.match(game, /고도리/);
   assert.match(game, /광박/);
   assert.match(css, /@media \(max-width: 460px\)/);
+  assert.match(css, /\.theme-glass/);
 });

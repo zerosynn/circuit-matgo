@@ -1,6 +1,7 @@
 export type Player = 0 | 1;
 export type CardKind = "bright" | "animal" | "ribbon" | "junk";
 export type Phase = "playing" | "decision" | "ended";
+export type CardSkin = "circuit" | "glass";
 
 export interface HwatuCard {
   id: string;
@@ -70,8 +71,8 @@ export const ALL_CARDS: HwatuCard[] = Array.from({ length: 12 }, (_, monthIndex)
   }),
 ).flat();
 
-export function cardImage(card: HwatuCard) {
-  return "/cards/" + card.id + ".webp";
+export function cardImage(card: HwatuCard, skin: CardSkin = "circuit") {
+  return "/" + (skin === "glass" ? "cards-glass/" : "cards/") + card.id + ".webp";
 }
 
 function shuffle<T>(items: T[]): T[] {
